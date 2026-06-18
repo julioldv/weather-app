@@ -1,6 +1,9 @@
 import "modern-normalize";
 import "./styles.css";
 
+const form = document.querySelector("#weather-form");
+const locationInput = document.querySelector("#location");
+
 async function getWeatherData(location) {
   try {
     const safeLocation = encodeURIComponent(location);
@@ -25,11 +28,15 @@ function processWeatherData(data) {
   };
 }
 
-async function displayTestWeatherData() {
-  const rawWeatherData = await getWeatherData("Mexico City");
+async function showWeatherForLocation(location) {
+  const rawWeatherData = await getWeatherData(location);
   const processedWeatherData = processWeatherData(rawWeatherData);
 
   console.log(processedWeatherData);
 }
 
-displayTestWeatherData();
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const location = locationInput.value.trim();
+  showWeatherForLocation(location);
+});
