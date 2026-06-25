@@ -51,12 +51,33 @@ function renderWeatherData(weatherData) {
   const locationTitle = document.createElement("h2");
   const temperatureDisplay = document.createElement("p");
   const conditionsDisplay = document.createElement("p");
+  const unitToggleButton = document.createElement("button");
+  unitToggleButton.textContent = "Show °C";
 
   locationTitle.textContent = weatherData.location;
   temperatureDisplay.textContent = `${weatherData.temperature} °F`;
   conditionsDisplay.textContent = weatherData.conditions;
 
-  container.append(locationTitle, temperatureDisplay, conditionsDisplay);
+  let isFahrenheit = true;
+
+  unitToggleButton.addEventListener("click", () => {
+    if (isFahrenheit) {
+      temperatureDisplay.textContent = `${fahrenheitToCelsius(weatherData.temperature)} °C`;
+      isFahrenheit = false;
+      unitToggleButton.textContent = "Show °F";
+    } else {
+      isFahrenheit = true;
+      temperatureDisplay.textContent = `${weatherData.temperature} °F`;
+      unitToggleButton.textContent = "Show °C";
+    }
+  });
+
+  container.append(
+    locationTitle,
+    temperatureDisplay,
+    unitToggleButton,
+    conditionsDisplay,
+  );
   weatherResultContainer.append(container);
 }
 
@@ -66,3 +87,7 @@ form.addEventListener("submit", (event) => {
   if (location === "") return;
   showWeatherForLocation(location);
 });
+
+function fahrenheitToCelsius(fahrenheit) {
+  return (((fahrenheit - 32) * 5) / 9).toFixed(1);
+}
