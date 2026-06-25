@@ -1,6 +1,7 @@
 import "modern-normalize";
 import "./styles.css";
 
+const weatherResultContainer = document.querySelector("#weather-result");
 const form = document.querySelector("#weather-form");
 const locationInput = document.querySelector("#location");
 
@@ -19,7 +20,6 @@ async function getWeatherData(location) {
     throw error;
   }
 }
-
 function processWeatherData(data) {
   return {
     location: data.resolvedAddress,
@@ -29,14 +29,30 @@ function processWeatherData(data) {
 }
 
 async function showWeatherForLocation(location) {
+  weatherResultContainer.innerHTML = "";
   const rawWeatherData = await getWeatherData(location);
   const processedWeatherData = processWeatherData(rawWeatherData);
 
-  console.log(processedWeatherData);
+  renderWeatherData(processedWeatherData);
+}
+
+function renderWeatherData(processedWeatherData) {
+  const container = document.createElement("div");
+  const locationTitle = document.createElement("h2");
+  const temperatureDisplay = document.createElement("p");
+  const conditionsDisplay = document.createElement("p");
+
+  locationTitle.textContent = processedWeatherData.location;
+  temperatureDisplay.textContent = `${processedWeatherData.temperature} Fahrenheit`;
+  conditionsDisplay.textContent = processedWeatherData.conditions;
+
+  container.append(locationTitle, temperatureDisplay, conditionsDisplay);
+  weatherResultContainer.append(container);
 }
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const location = locationInput.value.trim();
+  if (location === "") return;
   showWeatherForLocation(location);
 });
