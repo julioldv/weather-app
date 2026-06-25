@@ -30,21 +30,29 @@ function processWeatherData(data) {
 
 async function showWeatherForLocation(location) {
   weatherResultContainer.innerHTML = "";
-  const rawWeatherData = await getWeatherData(location);
-  const processedWeatherData = processWeatherData(rawWeatherData);
+  try {
+    const rawWeatherData = await getWeatherData(location);
+    const processedWeatherData = processWeatherData(rawWeatherData);
 
-  renderWeatherData(processedWeatherData);
+    renderWeatherData(processedWeatherData);
+  } catch (error) {
+    console.error(error);
+    const errorMessage = document.createElement("p");
+    errorMessage.textContent =
+      "Could not find that location. Please try again.";
+    weatherResultContainer.append(errorMessage);
+  }
 }
 
-function renderWeatherData(processedWeatherData) {
+function renderWeatherData(weatherData) {
   const container = document.createElement("div");
   const locationTitle = document.createElement("h2");
   const temperatureDisplay = document.createElement("p");
   const conditionsDisplay = document.createElement("p");
 
-  locationTitle.textContent = processedWeatherData.location;
-  temperatureDisplay.textContent = `${processedWeatherData.temperature} Fahrenheit`;
-  conditionsDisplay.textContent = processedWeatherData.conditions;
+  locationTitle.textContent = weatherData.location;
+  temperatureDisplay.textContent = `${weatherData.temperature} °F`;
+  conditionsDisplay.textContent = weatherData.conditions;
 
   container.append(locationTitle, temperatureDisplay, conditionsDisplay);
   weatherResultContainer.append(container);
