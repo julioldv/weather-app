@@ -5,6 +5,18 @@ const weatherResultContainer = document.querySelector("#weather-result");
 const form = document.querySelector("#weather-form");
 const locationInput = document.querySelector("#location");
 
+const weatherClasses = [
+  "weather-clear-day",
+  "weather-clear-night",
+  "weather-rain",
+  "weather-snow",
+  "weather-cloudy",
+  "weather-partly-cloudy-day",
+  "weather-partly-cloudy-night",
+  "weather-fog",
+  "weather-wind",
+];
+
 async function getWeatherData(location) {
   try {
     const safeLocation = encodeURIComponent(location);
@@ -25,6 +37,7 @@ function processWeatherData(data) {
     location: data.resolvedAddress,
     temperature: data.days[0].temp,
     conditions: data.days[0].conditions,
+    icon: data.days[0].icon,
   };
 }
 
@@ -47,11 +60,17 @@ async function showWeatherForLocation(location) {
 
 function renderWeatherData(weatherData) {
   weatherResultContainer.innerHTML = "";
+  updateWeatherTheme(weatherData.icon);
+
   const container = document.createElement("div");
   const locationTitle = document.createElement("h2");
   const temperatureDisplay = document.createElement("p");
   const conditionsDisplay = document.createElement("p");
   const unitToggleButton = document.createElement("button");
+
+  container.classList.add("weather-card");
+  temperatureDisplay.classList.add("temperature");
+
   unitToggleButton.textContent = "Show °C";
 
   locationTitle.textContent = weatherData.location;
@@ -63,12 +82,12 @@ function renderWeatherData(weatherData) {
   unitToggleButton.addEventListener("click", () => {
     if (isFahrenheit) {
       temperatureDisplay.textContent = `${fahrenheitToCelsius(weatherData.temperature)} °C`;
-      isFahrenheit = false;
       unitToggleButton.textContent = "Show °F";
+      isFahrenheit = false;
     } else {
-      isFahrenheit = true;
       temperatureDisplay.textContent = `${weatherData.temperature} °F`;
       unitToggleButton.textContent = "Show °C";
+      isFahrenheit = true;
     }
   });
 
@@ -78,6 +97,7 @@ function renderWeatherData(weatherData) {
     unitToggleButton,
     conditionsDisplay,
   );
+
   weatherResultContainer.append(container);
 }
 
@@ -90,4 +110,9 @@ form.addEventListener("submit", (event) => {
 
 function fahrenheitToCelsius(fahrenheit) {
   return (((fahrenheit - 32) * 5) / 9).toFixed(1);
+}
+
+function updateWeatherTheme(icon) {
+  document.body.classList.remove(...weatherClasses);
+  document.body.classList.add(`weather-${icon}`);
 }

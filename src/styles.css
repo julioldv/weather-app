@@ -1,0 +1,94 @@
+main {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: lightgray;
+}
+
+#weather-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: bold;
+}
+
+#weather-form input {
+  padding: 0.4rem;
+  border: 1px solid #999;
+  border-radius: 5px;
+}
+
+#weather-form button {
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#weather-result {
+  display: flex;
+  justify-content: center;
+}
+
+.weather-card {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  width: min(100%, 320px);
+
+  padding: 1.75rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+}
+
+.weather-card button {
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.weather-clear-day {
+  background: linear-gradient(135deg, #9ddcff, #fef6b2);
+}
+
+.weather-clear-night {
+  background: linear-gradient(135deg, #111827, #374151);
+  color: white;
+}
+
+.weather-rain {
+  background: linear-gradient(135deg, #64748b, #cbd5e1);
+}
+
+.weather-snow {
+  background: linear-gradient(135deg, #e0f2fe, #ffffff);
+}
+
+.weather-cloudy,
+.weather-partly-cloudy-day,
+.weather-partly-cloudy-night {
+  background: linear-gradient(135deg, #d1d5db, #f3f4f6);
+}
+
+.weather-fog {
+  background: linear-gradient(135deg, #e5e7eb, #f9fafb);
+}
+
+.weather-wind {
+  background: linear-gradient(135deg, #bae6fd, #e0f2fe);
+}
+
+@media (max-width: 500px) {
+  #weather-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
